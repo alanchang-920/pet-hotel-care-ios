@@ -14,6 +14,7 @@ struct RecordMedicationAdministrationUseCase {
 
     func execute(
         schedule: MedicationSchedule,
+        careTaskID: UUID,
         previousAdministration: CareActivityRecord?,
         staff: StaffMember,
         administeredAt: Date
@@ -35,7 +36,7 @@ struct RecordMedicationAdministrationUseCase {
         return CareActivityRecord(
             id: UUID(),
             petStayID: schedule.petStayID,
-            careTaskID: schedule.id,
+            careTaskID: careTaskID,
             taskType: .medication,
             completedAt: administeredAt,
             completedBy: staff,

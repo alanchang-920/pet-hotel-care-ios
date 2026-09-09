@@ -8,7 +8,7 @@ import Foundation
 
 /// Represents business-rule errors that can occur while staff
 /// perform care activities for guest pets.
-enum PetHotelError: Error, Equatable {
+enum PetHotelError: LocalizedError, Equatable {
 
     /// The selected care task has already been completed.
     case taskAlreadyCompleted
@@ -16,4 +16,14 @@ enum PetHotelError: Error, Equatable {
     /// Medication cannot be administered because the required
     /// minimum interval has not yet elapsed.
     case medicationTooSoon
+    
+    var errorDescription: String? {
+            switch self {
+            case .taskAlreadyCompleted:
+                return "This care task has already been completed. Check the care history before taking further action."
+
+            case .medicationTooSoon:
+                return "This medication cannot be administered yet. Check the previous administration time before giving another dose."
+            }
+        }
 }

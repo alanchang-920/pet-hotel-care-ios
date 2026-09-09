@@ -35,17 +35,20 @@ struct RecordMedicationAdministrationUseCaseTests {
         let schedule = makeSchedule()
         let staff = makeStaff()
         let administeredAt = Date()
+        let careTaskID = UUID()
 
         let useCase = RecordMedicationAdministrationUseCase()
 
         let record = try useCase.execute(
             schedule: schedule,
+            careTaskID: careTaskID,
             previousAdministration: nil,
             staff: staff,
             administeredAt: administeredAt
         )
 
         #expect(record.petStayID == schedule.petStayID)
+        #expect(record.careTaskID == careTaskID)
         #expect(record.taskType == .medication)
         #expect(record.completedAt == administeredAt)
         #expect(record.completedBy.id == staff.id)
@@ -55,25 +58,29 @@ struct RecordMedicationAdministrationUseCaseTests {
     func rejectsMedicationBeforeMinimumInterval() {
         let schedule = makeSchedule(minimumIntervalHours: 8)
         let staff = makeStaff()
+        let careTaskID = UUID()
 
         let previousTime = Date()
+
         let previousRecord = CareActivityRecord(
             id: UUID(),
             petStayID: schedule.petStayID,
-            careTaskID: schedule.id,
+            careTaskID: careTaskID,
             taskType: .medication,
             completedAt: previousTime,
             completedBy: staff,
             notes: nil
         )
 
-        let tooEarlyTime = previousTime.addingTimeInterval(7 * 60 * 60)
+        let tooEarlyTime =
+            previousTime.addingTimeInterval(7 * 60 * 60)
 
         let useCase = RecordMedicationAdministrationUseCase()
 
         #expect(throws: PetHotelError.medicationTooSoon) {
             try useCase.execute(
                 schedule: schedule,
+                careTaskID: careTaskID,
                 previousAdministration: previousRecord,
                 staff: staff,
                 administeredAt: tooEarlyTime
@@ -85,12 +92,14 @@ struct RecordMedicationAdministrationUseCaseTests {
     func allowsMedicationAtExactMinimumInterval() throws {
         let schedule = makeSchedule(minimumIntervalHours: 8)
         let staff = makeStaff()
+        let careTaskID = UUID()
 
         let previousTime = Date()
+
         let previousRecord = CareActivityRecord(
             id: UUID(),
             petStayID: schedule.petStayID,
-            careTaskID: schedule.id,
+            careTaskID: careTaskID,
             taskType: .medication,
             completedAt: previousTime,
             completedBy: staff,
@@ -104,11 +113,13 @@ struct RecordMedicationAdministrationUseCaseTests {
 
         let record = try useCase.execute(
             schedule: schedule,
+            careTaskID: careTaskID,
             previousAdministration: previousRecord,
             staff: staff,
             administeredAt: exactBoundaryTime
         )
 
+        #expect(record.careTaskID == careTaskID)
         #expect(record.completedAt == exactBoundaryTime)
         #expect(record.taskType == .medication)
     }

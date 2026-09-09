@@ -12,14 +12,14 @@ import Foundation
 /// requiring a persistent database or external service.
 enum MockPetHotelData {
 
-    // MARK: - Staff
+    // Staff
 
     static let currentStaff = StaffMember(
         id: UUID(),
         name: "Emma"
     )
 
-    // MARK: - Pets
+    // Pets
 
     static let milo = Pet(
         id: UUID(),
@@ -37,7 +37,7 @@ enum MockPetHotelData {
         dateOfBirth: makeDate(year: 2022, month: 7, day: 8)
     )
 
-    // MARK: - Pet Stays
+    // Pet Stays
 
     static let miloStay = PetStay(
         id: UUID(),
@@ -59,7 +59,7 @@ enum MockPetHotelData {
         careNotes: "Prefers a quiet environment."
     )
 
-    // MARK: - Care Tasks
+    // Tasks
 
     static let miloMorningFeeding = CareTask(
         id: UUID(),
@@ -124,7 +124,7 @@ enum MockPetHotelData {
         lunaMorningFeeding
     ]
 
-    // MARK: - Medication
+    // Medication
 
     static let miloMedication = MedicationSchedule(
         id: UUID(),
@@ -140,7 +140,7 @@ enum MockPetHotelData {
         minimumIntervalHours: 12
     )
 
-    // MARK: - Care History
+    // Care History
 
     static let miloWalkRecord = CareActivityRecord(
         id: UUID(),
@@ -162,14 +162,14 @@ enum MockPetHotelData {
         miloWalkRecord
     ]
 
-    // MARK: - Collections
+    // Collections
 
     static let currentStays = [
         miloStay,
         lunaStay
     ]
 
-    // MARK: - Date Helper
+    // Date Helper
 
     private static func makeDate(
         year: Int,
