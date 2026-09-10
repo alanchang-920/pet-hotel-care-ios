@@ -16,24 +16,43 @@ struct GuestDashboardView: View {
                         NavigationLink {
                             PetStayDetailView(stay: stay)
                         } label: {
-                            VStack(alignment: .leading, spacing: 6) {
-                                Text(stay.pet.name)
-                                    .font(.headline)
+                            HStack(spacing: 12) {
 
-                                Text(stay.pet.breed)
-                                    .font(.subheadline)
-                                    .foregroundStyle(.secondary)
+                                Image(systemName: petIcon(for: stay.pet.species))
+                                    .font(.title2)
+                                    .frame(width: 32)
 
-                                Text("Room \(stay.roomNumber)")
-                                    .font(.caption)
-                                    .foregroundStyle(.secondary)
+                                VStack(alignment: .leading, spacing: 4) {
+                                    Text(stay.pet.name)
+                                        .font(.headline)
+
+                                    Text(stay.pet.breed)
+                                        .font(.subheadline)
+                                        .foregroundStyle(.secondary)
+
+                                    Text("\(stay.pet.species.rawValue) • Room \(stay.roomNumber)")
+                                        .font(.caption)
+                                        .foregroundStyle(.secondary)
+                                }
+
+                                Spacer()
                             }
-                            .padding(.vertical, 4)
+                            .padding(.vertical, 6)
                         }
                     }
                 }
             }
             .navigationTitle("Pet Hotel")
+        }
+    }
+
+    private func petIcon(for species: PetSpecies) -> String {
+        switch species {
+        case .dog:
+            return "dog.fill"
+
+        case .cat:
+            return "cat.fill"
         }
     }
 }
